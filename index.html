@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>XLSX 필터링 & 채팅 출력</title>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="/style.css" (type="text/css")>
+</head>
+<body>
+
+  <div class="container">
+
+    <h1 style="width:100%;">채팅형 역극 백업기 made by 행복봇</h1>
+
+    <!-- 1열: 입력 + 필터된 테이블 -->
+    <div class="column block" style="flex: 2;">
+      <div class="input-area">
+        <h3 class = "title">입력
+            <span class="pf-v6-c-icon"><span class="pf-v6-c-icon__content pf-m-danger"><i class="fas fa-exclamation-circle" aria-hidden="true"></i></span></span>
+        </h3>
+        <br />
+        <input type="file" id="fileInput" accept=".xlsx, .xls" /><br /><br /><br />
+        <label>A <input type="text" id="authorName" placeholder="작성자 이름 입력" /></label><br />
+        <label>B <select id="nameSelect" disabled></select></label><br /><br />
+      </div>
+    </div>
+
+    <!-- 2열: 스타일 설정 -->
+    <div class="column block" style="flex: 1;">
+      <div class="style-input">
+        <h3 class = "title">스타일 설정</h3>
+        <br /><br />
+        <label>폰트 크기 <input type="text" id="fontSize" placeholder="예: 14px" value="14px" /></label><br />
+        <label>배경색<br />
+            A <input type="color" id="authorBg" value="#FFFFFF" />
+            B <input type="color" id="selectedBg" value="#D6D6D6" />
+        </label><br />
+
+        <label>글자색<br />
+            A <input type="color" id="authorTextColor" value="#0A0A0A">
+            B <input type="color" id="responderTextColor" value="#0A0A0A">
+        </label>
+      </div>
+    </div>
+
+    <!-- 3열: 채팅 형식 출력 -->
+    <div class="column block" style="flex: 2.5;">
+      <h3 class = "title">채팅 미리보기</h3>
+      <div id="chatOutput" class="chat-area"></div>
+      <button id="saveChatBtn">채팅 저장</button>
+    </div>
+
+    <div class = "block" style="width:100%; min-height:250px;">
+        <div class="output-area">
+            <h3>데이터 미리보기
+                <button id="editToggleBtn">수정 모드 켜기</button>
+            </h3>
+          <div id="output"></div>
+        </div>
+        </div>
+    </div>
+
+    <a>© 2025. HappyBot all rights reserved.</a>
+<script src="table.js"></script>
+
+</body>
+</html>
