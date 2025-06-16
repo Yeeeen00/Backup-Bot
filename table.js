@@ -11,8 +11,16 @@
   const responderTextColorInput = document.getElementById('responderTextColor');
   const authorTextColorInput = document.getElementById('authorTextColor');
     
+  const fileName = document.getElementById('fileName');
 
+  fileInput.addEventListener('change', () => {
+    fileName.textContent = fileInput.files.length > 0
+      ? fileInput.files[0].name
+      : '선택된 파일 없음';
+  });
+  
   fileInput.addEventListener('change', e => {
+    
     const file = e.target.files[0];
     if (!file) return;
 

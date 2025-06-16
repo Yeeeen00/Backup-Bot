@@ -10,7 +10,9 @@
 
   <div class="container">
 
-    <h1 style="width:100%;">채팅형 역극 백업기 made by 행복봇</h1>
+    <div class = "block" style = "width:100%; background-color: #FFCC33; color:#FFF;">
+      <h1 style="width:100%;"> 채팅형 HTML 생성기 made by 행복봇</h1>
+    </div>
 
     <!-- 1열: 입력 + 필터된 테이블 -->
     <div class="column block" style="flex: 2;">
@@ -18,10 +20,13 @@
         <h3 class = "title">입력
             <span class="pf-v6-c-icon"><span class="pf-v6-c-icon__content pf-m-danger"><i class="fas fa-exclamation-circle" aria-hidden="true"></i></span></span>
         </h3>
-        <br />
-        <input type="file" id="fileInput" accept=".xlsx, .xls" /><br /><br /><br />
-        <label>A <input type="text" id="authorName" placeholder="작성자 이름 입력" /></label><br />
-        <label>B <select id="nameSelect" disabled></select></label><br /><br />
+        <div class="file-upload">
+          <input type="file" id="fileInput" accept=".xlsx, .xls" />
+          <label for="fileInput">파일 선택</label>
+          <span id="fileName">선택된 파일 없음</span>
+        </div>
+        <label>A <input type="text" id="authorName" placeholder="작성자 이름 입력" /></label>
+        <label>B <select id="nameSelect" disabled></select></label>
       </div>
     </div>
 
@@ -29,16 +34,18 @@
     <div class="column block" style="flex: 1;">
       <div class="style-input">
         <h3 class = "title">스타일 설정</h3>
-        <br /><br />
-        <label>폰트 크기 <input type="text" id="fontSize" placeholder="예: 14px" value="14px" /></label><br />
-        <label>배경색<br />
+        <label>폰트 크기 <input type="text" id="fontSize" placeholder="예: 14px" value="14px" /></label>
+        <label>배경색
+          <div>
             A <input type="color" id="authorBg" value="#FFFFFF" />
             B <input type="color" id="selectedBg" value="#D6D6D6" />
-        </label><br />
-
-        <label>글자색<br />
+          </div>
+        </label>
+        <label>글자색
+          <div>
             A <input type="color" id="authorTextColor" value="#0A0A0A">
             B <input type="color" id="responderTextColor" value="#0A0A0A">
+          </div>
         </label>
       </div>
     </div>

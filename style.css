@@ -1,7 +1,8 @@
     @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Noto+Sans+KR&display=swap');
+    @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
 
     body {
-      font-family: 'Noto Sans KR', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: "Pretendard Variable", 'Pretendard';
       background-color: #f5f7fa;
       margin: 0;
       padding: 20px;
@@ -13,9 +14,13 @@
     h3 {
       margin-top: 0;
       margin-bottom: 12px;
-      font-weight: 700;
+      
+      font-weight: 400;
       color: #222;
-      font-size: 1.2rem;
+    }
+
+    h1 {
+      font-weight: 400;
     }
 
     .container {
@@ -55,7 +60,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    height: 4.5em; /* h3 높이만큼 강조 */
+    height: 4em; /* h3 높이만큼 강조 */
     width: 100%;
     background-color: #FFCC33; /* 원하는 강조색 */
     z-index: 0;
@@ -63,7 +68,7 @@
     }
 
     .column h3{
-        font-size: 24px;
+        font-size: 20px;
         color:#FFF;
         position:relative;
         z-index: 1;
@@ -78,6 +83,7 @@
       overflow-y: auto;
       font-size: 1rem;
       color: #333;
+      box-sizing: border-box;
     }
 
     /* 카드 스타일 */
@@ -93,21 +99,10 @@
     /* 1열 카드 중 입력과 테이블 묶음 */
     .input-area, .output-area, .style-input {
       min-width: 100%;
-    }
-
-    /* 파일 인풋 스타일 */
-    input[type="file"] {
-      font-size: 1rem;
-      color: #555;
-      cursor: pointer;
-      border: 1px solid #ddd;
-      padding: 8px 10px;
-      border-radius: 8px;
-      background-color: #fafafa;
-      transition: border-color 0.3s ease;
-    }
-    input[type="file"]:hover {
-      border-color: #bbb;
+      display:flex;
+      flex-direction: column;
+      gap:2em;
+      height:100%;
     }
 
     /* 텍스트, 선택박스, 컬러 피커 */
@@ -274,3 +269,52 @@
   height:auto;
 }
 
+button {
+  background-color: #FFCC33;
+  border-radius: 1em;
+  box-shadow: 0 0px 5px rgba(0, 0, 0, 0.07);
+  border-width: 0;
+  height: 30px;
+  min-width: 100px;
+}
+
+.file-upload {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+    width: 90%;
+    padding: 10px 14px;
+    font-size: 1rem;
+    border: 1.8px solid #ddd;
+    border-radius: 8px;
+    background-color: #fcfcfc;
+    color: #444;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    outline-offset: 2px;
+    outline-color: transparent;
+}
+
+.file-upload input[type="file"] {
+  display: none;
+}
+
+.file-upload label {
+  padding: 0.5rem 1rem;
+  background-color: #FFCC33;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin:0px;
+}
+
+.file-upload label:hover {
+  background-color: #e19034;
+}
+
+#fileName {
+  font-size: 0.9rem;
+  color: #555;
+  overflow: hidden;
+}
