@@ -234,7 +234,7 @@ function styleTextarea(textarea) {
   const fullHtml = `
     `;
 
-    fetch('/example.txt')
+    fetch('example.txt')
         .then(res => res.text())
         .then(text => {
             // 템플릿 내에서 {{변수명}} 같은 형식으로 치환
