@@ -4,23 +4,21 @@
     <meta charset="UTF-8">
     <title>채팅 저장</title>
     <style>
-
       @media (min-width: 1000px) {
         body{
           width: 600px;
         }
       }
-
-    html{
-      height:100%;
-    }
+      @media (max-width: 999px){
+        body{
+          font-size: ${fontSize}+${fontSize};
+        }
+      }
     body {
-      justify-self:center;
       font-family: 'Noto Sans KR', sans-serif;
       background: #f5f7fa;
       padding: 20px;
-      height:100%;
-
+      font-size: ${fontSize};
     }
     .chat-area {
       display: flex;
@@ -33,7 +31,6 @@
       max-width: 70%;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       word-break: break-word;
-      -webkit-text-size-adjust: 100%;
     }
     .author {
       align-self: flex-start;
@@ -45,15 +42,11 @@
       background-color: ${responderBg};
       color: ${responderTextColor};
     }
-    .copyright{
-      color:#777777;
-      font-Size:0.7em;
-      margin:20px 0px;
-    }
 
     
     /* 채팅영역 */
     .chat-area {
+      max-height: 650px;
       overflow-y: auto;
       font-size: 1rem;
       color: #333;
@@ -100,7 +93,7 @@
     </head>
     <body>
     ${chatHtml}
-    <div class = "copyright">© 2025. HappyBot All rights reserved.</a>
+    <a style = 'color:#777777; fontSize:0.6em'>© 2025. HappyBot All rights reserved.</a>
 </body>
 </html>
     

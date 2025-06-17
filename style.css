@@ -3,12 +3,12 @@
 
 body {
 font-family: "Pretendard Variable", 'Pretendard';
-background-color: #f5f7fa;
-margin: 0;
-padding: 20px;
+background-color: #FFFDD0;
 color: #333;
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
+padding:0;
+margin:0;
 }
 
 h3 {
@@ -31,6 +31,8 @@ gap: 1em;
 align-items: flex-start;
 width: 60%;
 margin: 0 auto;
+
+padding: 50px 20px;
 }
 
 /*반응형*/
@@ -280,6 +282,8 @@ user-select: none;
 
 button {
 background-color: #FFCC33;
+color:#FFF;
+font-weight: 400;
 border-radius: 6px;
 box-shadow: 0 0px 5px rgba(0, 0, 0, 0.07);
 border-width: 0;
@@ -346,4 +350,44 @@ align-items: center;
 flex: 1;
 padding: 0.4rem 0.6rem;
 font-size: 0.9rem;
+}
+
+
+/***********************
+Footer 스타일
+************************/
+.site-footer {
+  margin-top: 40px;
+  padding: 20px 12px;
+  background-color: #FFCC33;
+  color: #FFF;
+  font-size: 0.9rem;
+  text-align: center;
+
+  width:60%;
+  margin: 0 auto;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 600px) {
+  .footer-content {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.drag-handle {
+  cursor: grab;
+  user-select: none;
+  display: inline-block;
+  padding: 2px 4px;
+  font-size: 1.2em;
+  color: #666;
 }

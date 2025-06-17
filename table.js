@@ -11,8 +11,15 @@
   const responderTextColorInput = document.getElementById('responderTextColor');
   const authorTextColorInput = document.getElementById('authorTextColor');
   const replaceControls = document.getElementById('replace-controls');
+  const saveChatBtn = document.getElementById("saveChatBtn");
     
   const fileName = document.getElementById('fileName');
+
+  document.getElementById('add-row-btn').addEventListener('click', () => {
+    filteredRows.push({ name: '', comment: '' });
+    renderTable();
+    renderChat();
+  });
 
   fileInput.addEventListener('change', () => {
     fileName.textContent = fileInput.files.length > 0
@@ -105,71 +112,84 @@
     const authorName = authorInput.value.trim();
     const selectedName = nameSelect.value;
 
-    // ✅ 수정된 조건: editMode 중이면 filteredRows 유지
+    // 필터링 조건
     if ((!authorName || !selectedName) && (filteredRows.length === 0 || !editMode)) {
         filteredRows = [];
         return;
     }
 
+    //filter된 table이 없으면 row를 다시 불러옴
+    if (filteredRows.length === 0) {
+      
+      filteredRows = [];
+      let collecting = false;
+        
+      for (const row of parsedData) {
+        const name = row[nameIdx];
+        const comment = row[commentIdx] ?? '';
+        if (!name) continue;
+        
+        if (!collecting && name === selectedName) {
+          collecting = true;
+        }
+        
+        if (collecting) {
+          if (name !== selectedName && name !== authorName) break;
+          filteredRows.push({ name, comment });
+        }
+      }
+    }
+      
     const table = document.createElement('table');
     const headerRow = document.createElement('tr');
+
     ['이름', '댓글 내용'].forEach(text => {
         const th = document.createElement('th');
         th.textContent = text;
         if(text == '이름') th.style.textAlign = 'center';
         headerRow.appendChild(th);
     });
+
     table.appendChild(headerRow);
 
-    //filter된 table이 없으면 row를 다시 불러옴
-    if (filteredRows.length === 0) {
+    //정렬용 tbody
+    const tbody = document.createElement('tbody');
 
-        filteredRows = [];
-        let collecting = false;
-
-        for (const row of parsedData) {
-        const name = row[nameIdx];
-        const comment = row[commentIdx] ?? '';
-
-        if (!name) continue;
-
-        if (!collecting && name === selectedName) {
-            collecting = true;
-        }
-
-        if (collecting) {
-            if (name !== selectedName && name !== authorName) break;
-            filteredRows.push({ name, comment });
-        }
-        }
-    }
-    
     filteredRows.forEach((row, index) => {
     const tr = document.createElement('tr');
-
+    tr.setAttribute('data-index', index);
+    tr.draggable = true;
+      
     // 이름 셀
     const nameTd = document.createElement('td');
     nameTd.style.textAlign = 'center';
     nameTd.style.whiteSpace = 'nowrap';
     nameTd.style.width = '1%';
+
     if (editMode) {
-        const nameTextarea = document.createElement('textarea');
-        nameTextarea.value = row.name;
-        styleTextarea(nameTextarea);
+      const dragHandle = document.createElement('span');
+      dragHandle.className = 'drag-handle';
+      dragHandle.textContent = '≡';
+      dragHandle.title = '행 이동';
+      dragHandle.style.cursor = 'grab';
+      dragHandle.style.marginRight = '6px';
 
-        nameTextarea.className = 'table-name';
+      const nameTextarea = document.createElement('textarea');
+      nameTextarea.value = row.name;
+      nameTextarea.className = 'table-name';
+      styleTextarea(nameTextarea);
 
-        nameTextarea.addEventListener('input', (e) => {
+      nameTextarea.className = 'table-name';
+
+      nameTextarea.addEventListener('input', (e) => {
         filteredRows[index].name = e.target.value;
         autoResize(e.target);
         renderChat();  // 채팅창에도 반영
-        });
-
-      requestAnimationFrame(() => {
-        autoResize(nameTextarea);
       });
 
-        nameTd.appendChild(nameTextarea);
+      requestAnimationFrame(() => autoResize(nameTextarea));
+      nameTd.appendChild(nameTextarea);
+      nameTd.appendChild(dragHandle);
 
     } else {
         nameTd.textContent = row.name;
@@ -178,31 +198,51 @@
 
     // 댓글 셀
     const commentTd = document.createElement('td');
+    commentTd.style.display = 'flex';
+
     if (editMode) {
-        const commentTextarea = document.createElement('textarea');
-        commentTextarea.value = row.comment;
-        styleTextarea(commentTextarea);
-        
-        commentTextarea.addEventListener('input', (e) => {
+      const commentTextarea = document.createElement('textarea');
+      commentTextarea.value = row.comment;
+      styleTextarea(commentTextarea);
+      
+      commentTextarea.addEventListener('input', (e) => {
         filteredRows[index].comment = e.target.value;
         autoResize(e.target);
         renderChat();
-        });
+      });
 
       requestAnimationFrame(() => {
         autoResize(commentTextarea);
       });
+
         commentTd.appendChild(commentTextarea);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = '❌';
+        deleteBtn.style.marginLeft = '8px';
+        deleteBtn.style.cursor = 'pointer';
+        deleteBtn.style.minWidth = '0';
+
+        deleteBtn.onclick = () => {
+          filteredRows.splice(index, 1);
+          renderTable();
+          renderChat();
+        };
+      
+      commentTd.appendChild(deleteBtn);
     } else {
         commentTd.textContent = row.comment;
     }
     tr.appendChild(commentTd);
 
-    table.appendChild(tr);
+    tbody.appendChild(tr);
     });
 
-
+  table.appendChild(tbody);
   output.appendChild(table);
+
+  if (editMode) enableSortable(tbody);
+  
 }
 
 
@@ -225,11 +265,13 @@ function styleTextarea(textarea) {
 }
 
   function renderChat() { //채팅 출력
+    saveChatBtn.style.display = 'block';
+
     const chatOutput = document.getElementById('chatOutput');
     chatOutput.innerHTML = '';
 
     const authorName = authorInput.value.trim();
-    const fontSize = fontSizeInput.value.trim() || '14px';
+    const fontSize = 'clamp('+fontSizeInput.value.trim()+', 1vw, calc('+fontSizeInput.value.trim()+' + 6px))' || '14px';
     const authorBg = authorBgInput.value || '#FFFFFF';
     const selectedBg = selectedBgInput.value || '#D6D6D6';
     const authorTextColor = authorTextColorInput.value || '#0A0A0A';
@@ -260,28 +302,22 @@ function styleTextarea(textarea) {
     });
   }
 
-  document.getElementById("saveChatBtn").addEventListener("click", () => {
+  saveChatBtn.addEventListener("click", () => {
   // 1. chat-area HTML 내용 가져오기
   const chatHtml = document.querySelector(".chat-area").outerHTML;
 
   // 2. 동적 스타일 값 가져오기
     const authorName = authorInput.value.trim();
-    const fontSize = fontSizeInput.value.trim() || '14px';
     const authorBg = authorBgInput.value || '#FFFFFF';
     const responderBg = selectedBgInput.value || '#D6D6D6';
     const authorTextColor = authorTextColorInput.value || '#0A0A0A';
     const responderTextColor = responderTextColorInput.value || '#0A0A0A';
-
-  // 3. HTML 템플릿 만들기
-  const fullHtml = `
-    `;
 
     fetch('example.txt')
         .then(res => res.text())
         .then(text => {
             // 템플릿 내에서 {{변수명}} 같은 형식으로 치환
             const filled = text
-                .replace('${fontSize}', fontSize)
                 .replace('${authorBg}', authorBg)
                 .replace('${authorTextColor}', authorTextColor)
                 .replace('${responderBg}', responderBg)
@@ -312,3 +348,59 @@ document.getElementById('replaceAllBtn').addEventListener('click', () => {
   renderTable();  // 테이블 업데이트
   renderChat();   // 채팅 출력도 새로고침
 });
+
+
+//tbody 드래그
+function enableSortable(tbody) {
+  let draggedRow = null;
+
+  tbody.querySelectorAll('tr').forEach((row) => {
+        const handle = row.querySelector('.drag-handle');
+    if (!handle) return;
+
+    row.draggble = true;
+    handle.draggable = true;
+
+    row.addEventListener('dragstart', (e) => {
+      console.log('dragstart fired by:', e.target);
+
+      if(!e.target.classList.contains('drag-handle')){
+        e.preventDefault();
+        return;
+      }
+      console.log("it's a handle");
+      draggedRow = row;
+      row.style.opacity = 0;
+    });
+
+    row.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      const targetRow = e.currentTarget;
+
+      if (draggedRow && draggedRow !== targetRow) {
+        const rect = targetRow.getBoundingClientRect();
+        const offset = e.clientY - rect.top;
+        const midline = rect.height / 2;
+
+        if (offset < midline) {
+          targetRow.parentNode.insertBefore(draggedRow, targetRow);
+        } else {
+          targetRow.parentNode.insertBefore(draggedRow, targetRow.nextSibling);
+        }
+      }
+    });
+
+    row.addEventListener('dragend', () => {
+      draggedRow.style.opacity = 1;
+      draggedRow = null;
+
+      const newOrder = Array.from(tbody.children).map((tr) => {
+        const index = parseInt(tr.getAttribute('data-index'));
+        return filteredRows[index];
+      });
+      filteredRows = newOrder;
+      renderTable();
+      renderChat();
+    });
+  });
+}

@@ -11,10 +11,13 @@
   <div class="container">
 
     <div class = "block" style = "width:100%; background-color: #FFCC33; color:#FFF;">
-      <h1 style="width:100%;"> 채팅형 HTML 생성기 made by 행복봇</h1>
+      <h1 style="width:100%;"> 채팅형 HTML 생성기</h1>
       
       <a>
-        엑셀 파일을 채팅형 html로 변환하는 도구입니다.
+        엑셀 파일을 채팅형 html로 변환하는 도구입니다.<br/>
+        html 파일을 다운받아 자유롭게 이용하실 수 있습니다.<br/><br/>
+        디버깅이 완벽하지 않습니다. 오류가 발생하는 경우 문의해 주세요.
+        <br/><br/>
       </a>
     </div>
 
@@ -58,7 +61,7 @@
     <div class="column block" style="flex: 2.5;">
       <h3 class = "title">채팅 미리보기</h3>
       <div id="chatOutput" class="chat-area"></div>
-      <button id="saveChatBtn">채팅 저장</button>
+      <button id="saveChatBtn" style="display:none">채팅 저장</button>
     </div>
 
     <div class = "block" style="width:100%; min-height:250px;">
@@ -66,6 +69,9 @@
             <h3>데이터 미리보기
                 <button id="editToggleBtn">수정 모드 켜기</button>
                 <div class="replace-controls" id = "replace-controls" style="display: none;">
+                  <div id="replace-controls">
+                    <button id="add-row-btn">➕ 행 추가</button>
+                  </div>
                   <input type="text" id="findValue" placeholder="찾을 내용" />
                   <input type="text" id="replaceValue" placeholder="바꿀 내용" />
                   <button id="replaceAllBtn">전체 바꾸기</button>
@@ -76,10 +82,16 @@
           <div id="output"></div>
         </div>
       </div>
-      <a>© 2025. HappyBot all rights reserved.</a>
     </div>
 
-    <script src="table.js"></script>
+    <footer class="site-footer">
+      <div class="footer-content">
+        <span>&copy; 2025 HappyBot All rights reserved.</span>
+        <span>Made by HappyBot</span>
+      </div>
+    </footer>
+  </body>
+  
+  <script src="table.js"></script>
 
-</body>
 </html>
