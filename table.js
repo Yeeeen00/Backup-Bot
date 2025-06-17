@@ -10,6 +10,7 @@
   const selectedBgInput = document.getElementById('selectedBg');
   const responderTextColorInput = document.getElementById('responderTextColor');
   const authorTextColorInput = document.getElementById('authorTextColor');
+  const replaceControls = document.getElementById('replace-controls');
     
   const fileName = document.getElementById('fileName');
 
@@ -18,7 +19,7 @@
       ? fileInput.files[0].name
       : '선택된 파일 없음';
   });
-  
+
   fileInput.addEventListener('change', e => {
     
     const file = e.target.files[0];
@@ -82,6 +83,8 @@
   document.getElementById("editToggleBtn").addEventListener("click", () => {
     editMode = !editMode;
     document.getElementById("editToggleBtn").textContent = editMode ? "수정 모드 끄기" : "수정 모드 켜기";
+    replaceControls.style.display = editMode ? 'flex' : 'none';
+
     renderTable();
     });
 
@@ -147,15 +150,27 @@
     // 이름 셀
     const nameTd = document.createElement('td');
     nameTd.style.textAlign = 'center';
+    nameTd.style.whiteSpace = 'nowrap';
+    nameTd.style.width = '1%';
     if (editMode) {
         const nameTextarea = document.createElement('textarea');
         nameTextarea.value = row.name;
         styleTextarea(nameTextarea);
+
+        nameTextarea.className = 'table-name';
+
         nameTextarea.addEventListener('input', (e) => {
         filteredRows[index].name = e.target.value;
+        autoResize(e.target);
         renderChat();  // 채팅창에도 반영
         });
+
+      requestAnimationFrame(() => {
+        autoResize(nameTextarea);
+      });
+
         nameTd.appendChild(nameTextarea);
+
     } else {
         nameTd.textContent = row.name;
     }
@@ -167,10 +182,16 @@
         const commentTextarea = document.createElement('textarea');
         commentTextarea.value = row.comment;
         styleTextarea(commentTextarea);
+        
         commentTextarea.addEventListener('input', (e) => {
         filteredRows[index].comment = e.target.value;
+        autoResize(e.target);
         renderChat();
         });
+
+      requestAnimationFrame(() => {
+        autoResize(commentTextarea);
+      });
         commentTd.appendChild(commentTextarea);
     } else {
         commentTd.textContent = row.comment;
@@ -184,11 +205,24 @@
   output.appendChild(table);
 }
 
-function styleTextarea(textarea) {
-  textarea.style.resize = 'none';
+
+// 🔧 보조 함수들
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+
+  // 이름 셀에만 너비 자동 적용
+  if (el.classList.contains('table-name')) {
+    el.style.width = 'auto';
+    el.style.width = (el.scrollWidth - 20) + 'px';
+  }
 }
 
 
+function styleTextarea(textarea) {
+  textarea.style.overflow = 'hidden';
+  textarea.style.resize = 'none';
+}
 
   function renderChat() { //채팅 출력
     const chatOutput = document.getElementById('chatOutput');
@@ -262,3 +296,19 @@ function styleTextarea(textarea) {
 });
 
 
+document.getElementById('replaceAllBtn').addEventListener('click', () => {
+  const find = document.getElementById('findValue').value;
+  const replace = document.getElementById('replaceValue').value;
+
+  if (!find) return;
+
+  // filteredRows에 대해 find → replace 적용
+  filteredRows = filteredRows.map(row => {
+    const newName = row.name.replaceAll(find, replace);
+    const newComment = row.comment.replaceAll(find, replace);
+    return { name: newName, comment: newComment };
+  });
+
+  renderTable();  // 테이블 업데이트
+  renderChat();   // 채팅 출력도 새로고침
+});

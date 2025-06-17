@@ -12,6 +12,10 @@
 
     <div class = "block" style = "width:100%; background-color: #FFCC33; color:#FFF;">
       <h1 style="width:100%;"> 채팅형 HTML 생성기 made by 행복봇</h1>
+      
+      <a>
+        엑셀 파일을 채팅형 html로 변환하는 도구입니다.
+      </a>
     </div>
 
     <!-- 1열: 입력 + 필터된 테이블 -->
@@ -61,7 +65,14 @@
         <div class="output-area">
             <h3>데이터 미리보기
                 <button id="editToggleBtn">수정 모드 켜기</button>
+                <div class="replace-controls" id = "replace-controls" style="display: none;">
+                  <input type="text" id="findValue" placeholder="찾을 내용" />
+                  <input type="text" id="replaceValue" placeholder="바꿀 내용" />
+                  <button id="replaceAllBtn">전체 바꾸기</button>
+                </div>
             </h3>
+
+
           <div id="output"></div>
         </div>
       </div>
