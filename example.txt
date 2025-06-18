@@ -100,7 +100,7 @@
     </head>
     <body>
     ${chatHtml}
-    <div class = "copyright">© 2025. HappyBot All rights reserved.</a>
+    <div class = "copyright">&copy; 2025. HANGSHOW All rights reserved.</a>
 </body>
 </html>
     
