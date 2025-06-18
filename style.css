@@ -1,9 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Noto+Sans+KR&display=swap');
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
 
+:root{
+  --background-color:#e4e4e4;
+  --point-color:#4f4f4f;
+}
+
 body {
 font-family: "Pretendard Variable", 'Pretendard';
-background-color: #FFFDD0;
+background-color: var(--background-color);
 color: #333;
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
@@ -64,7 +69,7 @@ top: 0;
 left: 0;
 height: 4em; /* h3 높이만큼 강조 */
 width: 100%;
-background-color: #FFCC33; /* 원하는 강조색 */
+background-color: var(--point-color); /* 원하는 강조색 */
 z-index: 0;
 pointer-events: none; /* 클릭 방해 방지 */
 }
@@ -281,7 +286,7 @@ user-select: none;
 }
 
 button {
-background-color: #FFCC33;
+background-color: var(--point-color);
 color:#FFF;
 font-weight: 400;
 border-radius: 6px;
@@ -321,7 +326,7 @@ display: none;
 
 .file-upload label {
 padding: 0.5rem 1rem;
-background-color: #FFCC33;
+background-color: var(--point-color);
 color: white;
 border-radius: 6px;
 cursor: pointer;
@@ -359,7 +364,7 @@ Footer 스타일
 .site-footer {
   margin-top: 40px;
   padding: 20px 12px;
-  background-color: #FFCC33;
+  background-color: var(--point-color);
   color: #FFF;
   font-size: 0.9rem;
   text-align: center;
